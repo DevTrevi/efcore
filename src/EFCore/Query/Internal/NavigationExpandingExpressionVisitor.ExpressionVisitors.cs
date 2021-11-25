@@ -143,6 +143,9 @@ public partial class NavigationExpandingExpressionVisitor
                     return ownedExpansion;
                 }
 
+                // create a dummy query root to make sure that we can actually expand this navigation (later)
+                var _ = _extensibilityHelper.CreateQueryRoot(targetType, entityReference.QueryRootExpression);
+
                 var ownedEntityReference = new EntityReference(targetType, entityReference.QueryRootExpression);
                 _navigationExpandingExpressionVisitor.PopulateEagerLoadedNavigations(ownedEntityReference.IncludePaths);
                 ownedEntityReference.MarkAsOptional();

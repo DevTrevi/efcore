@@ -26,7 +26,17 @@ public class ExceptExpression : SetOperationBase
         SelectExpression source1,
         SelectExpression source2,
         bool distinct)
-        : base(alias, source1, source2, distinct)
+        : this(alias, source1, source2, distinct, Enumerable.Empty<ISqlExpressionAnnotation>())
+    {
+    }
+
+    private ExceptExpression(
+        string alias,
+        SelectExpression source1,
+        SelectExpression source2,
+        bool distinct,
+        IEnumerable<ISqlExpressionAnnotation> annotations)
+        : base(alias, source1, source2, distinct, annotations)
     {
     }
 
@@ -48,7 +58,7 @@ public class ExceptExpression : SetOperationBase
     /// <returns>This expression if no children changed, or an expression with the updated children.</returns>
     public virtual ExceptExpression Update(SelectExpression source1, SelectExpression source2)
         => source1 != Source1 || source2 != Source2
-            ? new ExceptExpression(Alias, source1, source2, IsDistinct)
+            ? new ExceptExpression(Alias, source1, source2, IsDistinct, GetAnnotations())
             : this;
 
     /// <inheritdoc />
